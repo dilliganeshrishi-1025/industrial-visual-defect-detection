@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Deep Learning-Based Anomaly Detection and Quality Triage Web Portal for Glass Bottle Inspection — PatchCore AI Benchmark Dashboard">
+  <title>Smart Triage — Glass Bottle Anomaly Detection &amp; Quality Triage Web Portal</title>
+  <!-- Google Fonts & Charting Libraries -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <link rel="stylesheet" href="style.css?v=3">
+  <script src="dashboard.js?v=3" defer></script>
+</head>
+<body>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p class="loading-text">Initializing Industrial Triage Dashboard...</p>
+  </div>
+
+  <!-- Top Navigation Header -->
+  <header class="top-navbar" id="top-navbar">
+    <div class="nav-left">
+      <div class="brand-logo">
+        <span class="brand-icon">🔍</span>
+        <span class="brand-text"><span class="brand-highlight">Smart</span> Triage</span>
+      </div>
+      <span class="navbar-tag">Glass Bottle Anomaly Detection &amp; Quality Triage</span>
+    </div>
+
+    <nav class="top-nav-links">
+      <a href="#dashboard" class="top-nav-item active" data-page="dashboard">📊 Dashboard</a>
+      <a href="#single" class="top-nav-item" data-page="single">📸 Bottle Rim Inspection</a>
+      <a href="#batch" class="top-nav-item" data-page="batch">📦 Batch Inspection</a>
+      <a href="#datasets" class="top-nav-item" data-page="datasets">🗄️ MVTec Dataset</a>
+      <a href="#results" class="top-nav-item" data-page="results">🏆 Benchmark Results</a>
+    </nav>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content" id="main-content">
+
+    <!-- ============================================================= -->
+    <!-- PAGE 1: DASHBOARD OVERVIEW -->
+    <!-- ============================================================= -->
+    <div class="page active" id="page-dashboard">
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-badge">GLASS CONTAINER QUALITY ASSURANCE · UNSUPERVISED PATCHCORE &amp; POLAR GEOMETRY</div>
+        <h1>Glass Bottle Anomaly Detection<br><span class="hero-accent">&amp; Quality Triage Engine</span></h1>
+        <p class="hero-subtitle">
+          Intelligent image-based defect inspection portal powered by unsupervised PatchCore feature extraction, 360° polar coordinate unwrapping, dual-zone rim/core masking, and automated industrial triage grading (Pass / Rework / Scrap).
+        </p>
+
+        <!-- Quick Access Action Hub -->
+        <div style="display:flex; gap:16px; justify-content:center; margin:20px 0 28px 0; flex-wrap:wrap;">
+          <button class="btn btn-primary" id="btn-hero-glass">📸 Launch Bottle Inspection Studio</button>
+          <button class="btn btn-secondary" id="btn-hero-datasets">🗄️ Explore MVTec AD Dataset</button>
+        </div>
+
+        <div class="hero-stats" id="hero-stats">
+          <div class="stat-card">
+            <div class="stat-value" id="stat-auroc">100.0%</div>
+            <div class="stat-label">MVTec Rim AUROC</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-latency">&lt; 15ms</div>
+            <div class="stat-label">Inference Latency</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-normal-samples">209</div>
+            <div class="stat-label">Normal Training Samples</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-test-samples">166</div>
+            <div class="stat-label">Test Evaluation Samples</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-scrap-detect">100%</div>
+            <div class="stat-label">Critical Scrap Recall</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pipeline Architecture Overview -->
+      <section class="container">
+        <div class="section-header">
+          <div class="section-label">SYSTEM ARCHITECTURE</div>
+          <h2>End-to-End Inspection Pipeline</h2>
+          <p class="section-desc">5-stage deep learning pipeline connecting high-speed acquisition to automated industrial bin sorting.</p>
+        </div>
+
+        <div class="pipeline-flow">
+          <div class="pipeline-step">
+            <div class="pipeline-icon">📸</div>
+            <div class="pipeline-title">Camera Acquisition</div>
+            <div class="pipeline-desc">RGB Conversion · 256×256 Resizing</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">🧠</div>
+            <div class="pipeline-title">ResNet18 Feature Fusion</div>
+            <div class="pipeline-desc">Layer 2 + Layer 3 Concatenation</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">💾</div>
+            <div class="pipeline-title">PatchCore Memory Bank</div>
+            <div class="pipeline-desc">784 Local Patches · BLAS Matching</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">🌀</div>
+            <div class="pipeline-title">Polar &amp; Dual-Zone</div>
+            <div class="pipeline-desc">cv2.warpPolar 360° Ribbon · DSAR %</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">🏷️</div>
+            <div class="pipeline-title">Quality Triage Action</div>
+            <div class="pipeline-desc">Grade A (Good) · Grade B (Contaminated) · Grade C (Critical Damage)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- System Health Status & Quick Overview Cards -->
+      <section class="container">
+        <div class="section-header">
+          <div class="section-label">SYSTEM HEALTH & API STATUS</div>
+          <h2>FastAPI Backend Microservice Status</h2>
+          <p class="section-desc">Live connection status to FastAPI REST Service running on port 8000.</p>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card highlight-green">
+            <div class="kpi-title">Backend API Status</div>
+            <div class="kpi-value green" id="api-status-text">Checking...</div>
+            <div class="kpi-subtext" id="api-url-text">http://localhost:8000</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title">Coreset Memory Vectors</div>
+            <div class="kpi-value cyan" id="coreset-count-text">7,840</div>
+            <div class="kpi-subtext">384-dimensional patch embeddings</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title">Calibrated Decision Boundary</div>
+            <div class="kpi-value amber" id="threshold-val-text">0.4263</div>
+            <div class="kpi-subtext">Optimal AUROC Threshold</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title">Benchmark Dataset</div>
+            <div class="kpi-value purple">MVTec AD Bottle</div>
+            <div class="kpi-subtext">209 Train | 166 Test Images</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- PAGE 2: SINGLE BOTTLE INSPECTION STUDIO -->
+    <!-- ============================================================= -->
+    <div class="page" id="page-single">
+      <section class="container">
+        <div class="section-header">
+          <div class="section-label">INSPECTION STUDIO</div>
+          <h2>Single Image Quality Inspection &amp; Anomaly Heatmap</h2>
+          <p class="section-desc">Upload a bottle image or select a sample from the MVTec AD dataset to execute real-time anomaly localization, polar unwrapping, and triage grading.</p>
+        </div>
+
+        <!-- Controls Row -->
+        <div class="studio-card">
+          <div class="studio-header">
+            <h3>Input Source Selection</h3>
+            <div class="toggle-group">
+              <button class="toggle-btn active" id="btn-input-sample">🖼️ Select MVTec Sample</button>
+              <button class="toggle-btn" id="btn-input-upload">📁 Upload Custom Image</button>
+            </div>
+          </div>
+
+          <!-- Sample Selector Form -->
+          <div class="control-row" id="form-sample-select">
+            <div class="form-group">
+              <label for="select-category">Defect Category:</label>
+              <select id="select-category" class="custom-select">
+                <option value="good">Good (Normal / Clean)</option>
+                <option value="broken_large">Broken Large (Severe Missing Shard)</option>
+                <option value="broken_small">Broken Small (Rim Fracture / Chip)</option>
+                <option value="contamination">Contamination (Foreign Debris / Stain)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="select-filename">Sample File:</label>
+              <select id="select-filename" class="custom-select">
+                <!-- Dynamically filled -->
+              </select>
+            </div>
+
+            <button class="btn btn-primary" id="btn-run-sample-inspect">🔎 Run Inspection via API</button>
+          </div>
+
+          <!-- Custom File Upload Form -->
+          <div class="control-row hidden" id="form-file-upload">
+            <div class="file-upload-box">
+              <input type="file" id="file-input-custom" accept="image/png, image/jpeg, image/jpg">
+              <div class="upload-prompt">
+                <span class="upload-icon">📁</span>
+                <span class="upload-text">Click to choose image or drag &amp; drop file here</span>
+                <span class="upload-sub">Supports PNG, JPG, JPEG</span>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="btn-run-upload-inspect" style="margin-top: 15px;">🔎 Run Inspection via API</button>
+          </div>
+        </div>
+
+        <!-- Results Display Box -->
+        <div id="inspection-results-container" class="studio-card hidden">
+          <div class="studio-header">
+            <h3>Inspection Analysis Output</h3>
+            <div id="result-grade-badge" class="badge-grade grade-a">Grade A — Good</div>
+          </div>
+
+          <!-- Image Triplet -->
+          <div class="image-triplet-grid">
+            <div class="img-card">
+              <div class="img-title">(a) Original Bottle Image</div>
+              <img id="res-img-orig" src="" alt="Original Input">
+            </div>
+            <div class="img-card">
+              <div class="img-title">(b) PatchCore Spatial Heatmap</div>
+              <img id="res-img-heatmap" src="" alt="Anomaly Heatmap">
+            </div>
+            <div class="img-card">
+              <div class="img-title">(c) 360° Polar Unwrapped Ribbon</div>
+              <img id="res-img-polar" src="" alt="Polar Unwrapped Strip">
+            </div>
+          </div>
+
+          <!-- Metrics Row -->
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <span class="m-label">Anomaly Score</span>
+              <span class="m-val" id="res-val-score">0.0000</span>
+            </div>
+            <div class="metric-box">
+              <span class="m-label">DSAR % (Defect Surface Area)</span>
+              <span class="m-val" id="res-val-dsar">0.00%</span>
+            </div>
+            <div class="metric-box">
+              <span class="m-label">Structural Anatomical Zone</span>
+              <span class="m-val" id="res-val-zone">Mouth Rim</span>
+            </div>
+            <div class="metric-box">
+              <span class="m-label">Quality Classification</span>
+              <span class="m-val" id="res-val-verdict">GOOD</span>
+            </div>
+          </div>
+
+          <!-- Grading Rationale Banner -->
+          <div class="action-banner" style="margin-bottom: 12px; background: rgba(30, 41, 59, 0.7); border-left: 4px solid var(--accent-cyan);">
+            <div class="action-left">
+              <span class="action-icon">🔬</span>
+              <div>
+                <div class="action-title">Grading Diagnosis &amp; Rationale</div>
+                <div class="action-desc" id="res-val-reason">Intact defect-free glass bottle meeting packaging standards.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Triage Action Box & PDF Download -->
+          <div class="action-banner">
+            <div class="action-left">
+              <span class="action-icon">⚙️</span>
+              <div>
+                <div class="action-title">Industrial Disposal Action</div>
+                <div class="action-desc" id="res-val-action">Approved for High-Speed Packaging Line</div>
+              </div>
+            </div>
+            <button class="btn btn-secondary" id="btn-download-pdf">📄 Download QA PDF Certificate</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- PAGE 2: BATCH & MULTI-IMAGE INSPECTION STUDIO -->
+    <!-- ============================================================= -->
+    <div class="page" id="page-batch">
+      <section class="container">
+        <div class="section-header">
+          <div class="section-label">BATCH PROCESSING SUITE</div>
+          <h2>Multi-Image &amp; Batch Quality Inspection</h2>
+          <p class="section-desc">Upload multiple bottle images simultaneously for bulk anomaly detection, automated triage grading, and batch CSV report generation.</p>
+        </div>
+
+        <div class="studio-card">
+          <div class="studio-header">
+            <h3>Batch Image Upload</h3>
+            <span class="navbar-tag" id="batch-file-count-badge">0 files selected</span>
+          </div>
+
+          <div class="file-upload-box" id="batch-upload-dropzone">
+            <input type="file" id="batch-file-input" accept="image/png, image/jpeg, image/jpg" multiple>
+            <div class="upload-prompt">
+              <span class="upload-icon">📦</span>
+              <span class="upload-text">Drag &amp; Drop multiple bottle images here, or click to browse</span>
+              <span class="upload-sub">Select multiple files (PNG, JPG, JPEG) at once</span>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; margin-top: 20px; align-items: center; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="btn-run-batch-inspect" disabled>🚀 Analyze Batch via PatchCore AI</button>
+            <button class="btn btn-secondary hidden" id="btn-download-batch-csv">📥 Download Batch Results CSV</button>
+            <span id="batch-process-status" style="font-size: 0.88rem; color: var(--text-sub);"></span>
+          </div>
+        </div>
+
+        <!-- Batch Results Summary -->
+        <div id="batch-results-container" class="hidden">
+          <!-- Summary Cards -->
+          <div class="dataset-stats-grid" style="margin-bottom: 24px;">
+            <div class="dataset-stat-card">
+              <div class="d-val" id="batch-stat-total">0</div>
+              <div class="d-label">Total Processed</div>
+            </div>
+            <div class="dataset-stat-card" style="border-color: rgba(16, 185, 129, 0.4);">
+              <div class="d-val" style="color: var(--status-good);" id="batch-stat-passed">0</div>
+              <div class="d-label">Grade A — Good</div>
+            </div>
+            <div class="dataset-stat-card" style="border-color: rgba(245, 158, 11, 0.4);">
+              <div class="d-val" style="color: var(--status-rework);" id="batch-stat-rework">0</div>
+              <div class="d-label">Grade B — Contaminated</div>
+            </div>
+            <div class="dataset-stat-card" style="border-color: rgba(239, 68, 68, 0.4);">
+              <div class="d-val" style="color: var(--status-scrap);" id="batch-stat-scrap">0</div>
+              <div class="d-label">Grade C — Critical Damage</div>
+            </div>
+          </div>
+
+          <!-- Heatmap Gallery Grid -->
+          <div class="studio-card" style="margin-bottom: 30px;">
+            <div class="studio-header">
+              <h3>🖼️ Batch Defect Heatmap Gallery</h3>
+              <span class="badge-subtitle">Visual PatchCore Anomaly Localization for Every Bottle</span>
+            </div>
+            <div class="batch-gallery-grid" id="batch-gallery-grid">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Table Section -->
+          <div class="table-section">
+            <div class="table-header-title">
+              <h3>📋 Batch Inspection Detailed Records</h3>
+              <span class="badge-subtitle">Exportable to CSV Report</span>
+            </div>
+            <div class="table-wrapper" style="max-height: 500px; overflow-y: auto;">
+              <table id="batch-table">
+                <thead>
+                  <tr>
+                    <th>Preview</th>
+                    <th>Filename</th>
+                    <th>Category</th>
+                    <th>Anomaly Score</th>
+                    <th>Verdict</th>
+                    <th>Quality Grade</th>
+                    <th>DSAR %</th>
+                    <th>Defect Zone</th>
+                    <th>Disposal Action</th>
+                    <th style="text-align: center;">🔍 Single Inspection</th>
+                  </tr>
+                </thead>
+                <tbody id="batch-table-body">
+                  <!-- Dynamically rendered -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- PAGE 4: UNIFIED DATASETS EXPLORER (MVTEC & PLASTIC) -->
+    <!-- ============================================================= -->
+    <div class="page" id="page-datasets">
+      <section class="container">
+        <div class="section-header">
+          <div class="section-label">INDUSTRIAL BENCHMARK REPOSITORY</div>
+          <h2>MVTec AD Glass Bottle Dataset &amp; Quality Specifications</h2>
+          <p class="section-desc">Official benchmark repository access for the MVTec AD Glass Container dataset evaluated with Unsupervised PatchCore Anomaly Localization.</p>
+        </div>
+
+        <div id="content-data-mvtec">
+          <div class="dataset-stats-grid">
+            <div class="dataset-stat-card">
+              <div class="d-val">209</div>
+              <div class="d-label">Normal Training Images</div>
+            </div>
+            <div class="dataset-stat-card">
+              <div class="d-val">20</div>
+              <div class="d-label">Normal Test Images</div>
+            </div>
+            <div class="dataset-stat-card">
+              <div class="d-val">40</div>
+              <div class="d-label">Broken Large Defect Samples</div>
+            </div>
+            <div class="dataset-stat-card">
+              <div class="d-val">22</div>
+              <div class="d-label">Broken Small Defect Samples</div>
+            </div>
+            <div class="dataset-stat-card">
+              <div class="d-val">40</div>
+              <div class="d-label">Contamination Defect Samples</div>
+            </div>
+          </div>
+
+          <!-- MVTec Category Table -->
+          <div class="table-section" style="margin-bottom: 25px;">
+            <div class="table-header-title">
+              <h3>🏭 MVTec AD Glass Bottle Dataset Category Breakdown</h3>
+              <span class="badge-subtitle">100% Unsupervised PatchCore Training</span>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Category Name</th>
+                    <th>Image Count</th>
+                    <th>Defect Severity</th>
+                    <th>Anatomical Impact Zone</th>
+                    <th>Factory Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="tag green">Good (Normal)</span></td>
+                    <td>209 (Train) / 20 (Test)</td>
+                    <td>0.00% (Clean)</td>
+                    <td>None</td>
+                    <td>Approved for Filling &amp; Packaging</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag red">Broken Large</span></td>
+                    <td>40 (Test)</td>
+                    <td>Critical (&gt; 15% DSAR)</td>
+                    <td>Mouth Rim Annulus</td>
+                    <td>Immediate Rejection / Scrap Bin</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag amber">Broken Small</span></td>
+                    <td>22 (Test)</td>
+                    <td>Reworkable (&lt; 5% DSAR)</td>
+                    <td>Lip / Rim Fracture</td>
+                    <td>Secondary Rework / Polishing Line</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag crimson">Contamination</span></td>
+                    <td>40 (Test)</td>
+                    <td>Surface Foreign Spot</td>
+                    <td>Internal Core Circle</td>
+                    <td>High-Pressure Chemical Wash</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- MVTec Interactive Gallery Browser -->
+          <div class="studio-card">
+            <div class="studio-header">
+              <h3>🖼️ Interactive MVTec AD Image Gallery</h3>
+              <span class="badge-subtitle">Click any image to inspect in Bottle Rim Studio</span>
+            </div>
+
+            <div class="category-filter-bar" id="filters-mvtec">
+              <button class="category-pill active" data-cat="all">All Categories</button>
+              <button class="category-pill" data-cat="good">Good (Normal)</button>
+              <button class="category-pill" data-cat="broken_large">Broken Large</button>
+              <button class="category-pill" data-cat="broken_small">Broken Small</button>
+              <button class="category-pill" data-cat="contamination">Contamination</button>
+            </div>
+
+            <div class="dataset-gallery-grid" id="grid-mvtec-gallery">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- PAGE 4: BENCHMARK RESULTS & ANALYTICS -->
+    <!-- ============================================================= -->
+    <div class="page" id="page-results">
+      <section class="container">
+        <div class="section-header">
+          <div class="section-label">AI BENCHMARK RESULTS</div>
+          <h2>Performance Evaluation &amp; Score Analytics</h2>
+          <p class="section-desc">Comprehensive evaluation of the PatchCore model on all 166 MVTec test samples.</p>
+        </div>
+
+        <div class="results-actions">
+          <button class="btn btn-primary" id="btn-run-full-benchmark">🚀 Trigger Full Backend Benchmark</button>
+          <button class="btn btn-secondary" id="btn-export-csv" disabled>📥 Export Batch CSV Report</button>
+        </div>
+
+        <div id="benchmark-charts-container" class="charts-grid hidden">
+          <div class="chart-card">
+            <h3>Anomaly Score Distribution across Categories</h3>
+            <div id="chart-boxplot" style="height: 380px;"></div>
+          </div>
+          <div class="chart-card">
+            <h3>Defect Classification Accuracy</h3>
+            <div id="chart-bar" style="height: 380px;"></div>
+          </div>
+        </div>
+
+        <div class="table-section" id="benchmark-table-container" style="margin-top: 30px;">
+          <div class="table-header-title">
+            <h3>📋 Detailed Benchmark Inspection Records</h3>
+            <span class="badge-subtitle" id="benchmark-count-badge">Click "Trigger Full Backend Benchmark" to evaluate</span>
+          </div>
+          <div class="table-wrapper" style="max-height: 500px; overflow-y: auto;">
+            <table id="benchmark-results-table">
+              <thead>
+                <tr>
+                  <th>Filename</th>
+                  <th>Category</th>
+                  <th>True Label</th>
+                  <th>Anomaly Score</th>
+                  <th>Verdict</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody id="benchmark-table-body">
+                <tr>
+                  <td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">No benchmark data loaded yet. Click button above.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p><b>Industrial Visual Defect Detection &amp; Quality Triage Engine</b> | Gen-4 Unsupervised PatchCore Microservice</p>
+      <p class="footer-sub">FastAPI Backend REST API (Port 8000) · PyTorch ResNet18 Backbone · MVTec AD Bottle Dataset</p>
+    </div>
+  </footer>
+
+</body>
+</html>

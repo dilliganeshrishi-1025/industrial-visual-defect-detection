@@ -1,0 +1,19 @@
+{
+  "inspection_domain": "plastic_bottle",
+  "model_version": "PB-v1.0",
+  "threshold_version": "PB-Threshold-v1.0",
+  "threshold": 0.3309,
+  "calibration_method": "Youden J Statistic & Maximum F1 Optimization",
+  "validation_samples": {
+    "good": 15,
+    "defective": 18,
+    "total": 33
+  },
+  "score_distribution": {
+    "good_mean": 0.22501999999999997,
+    "good_max": 0.3272,
+    "defect_mean": 0.7002333333333334,
+    "defect_min": 0.3749
+  },
+  "calibrated_at": "2026-10-04"
+}
